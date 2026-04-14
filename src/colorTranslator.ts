@@ -32,6 +32,7 @@ import {
   a98ToString,
   cmykToString,
   hex0xToString,
+  hex0xAbgrToString,
   hexToString,
   hslToString,
   hwbToString,
@@ -123,6 +124,18 @@ export default class ColorTranslator {
     return {
       ...rgbToHex(rgb100ToRgb(rgb100)),
       toString: hex0xToString,
+      options: this._options,
+    };
+  }
+
+  // HEX 0x
+
+  get hex0xAbgr(): HEX & GetColor {
+    const rgb100 =
+      (this._cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
+    return {
+      ...rgbToHex(rgb100ToRgb(rgb100)),
+      toString: hex0xAbgrToString,
       options: this._options,
     };
   }

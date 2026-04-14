@@ -364,6 +364,33 @@ export function hex0xToString(
   );
 }
 
+export function hex0xAbgrToString(
+  this: HEX & GetColor,
+  customOptions: RecursivePartial<StringOptions> = {}
+) {
+  if (!customOptions.customOutputs?.hex) {
+    return hexToString.bind(this)(customOptions, true);
+  }
+
+  const { options } = this;
+  const stringOptions = mergeDeep(options)(customOptions);
+  let { r, g, b, alpha } = this;
+  if (stringOptions.limitToColorSpace) {
+    ({ r, g, b, alpha } = clampHexColor({ r, g, b, alpha }));
+  }
+
+  return customToString(
+    {
+      alpha,
+      b,
+      g,
+      r,
+    } as HEX,
+    getOutputOptions(stringOptions, ColorOutput.HEX),
+    stringOptions
+  );
+}
+
 export function oklabToString(
   this: OKLAB<number> & GetColor,
   customOptions: RecursivePartial<StringOptions> = {}
